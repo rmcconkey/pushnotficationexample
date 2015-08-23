@@ -1,19 +1,30 @@
 package com.example.rmcconkey.pushnotificationexample;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     ProgressDialog prgDialog;
     RequestParams params = new RequestParams();
@@ -117,6 +128,19 @@ public class MainActivity extends AppCompatActivity {
         }.execute(null, null, null);
     }
 
+    // Store  RegId and Email entered by User in SharedPref
+    private void storeRegIdinSharedPref(Context context, String regId,
+                                        String emailID) {
+        SharedPreferences prefs = getSharedPreferences("UserDetails",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(REG_ID, regId);
+        editor.putString(EMAIL_ID, emailID);
+        editor.commit();
+        storeRegIdinServer();
+
+    }
+
     // Share RegID with GCM Server Application (Php)
     private void storeRegIdinServer() {
         prgDialog.show();
@@ -128,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     // When the response returned by REST has Http
                     // response code '200'
                     @Override
-                    public void onSuccess(String response) {
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         // Hide Progress Dialog
                         prgDialog.hide();
                         if (prgDialog != null) {
@@ -148,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
                     // response code other than '200' such as '404',
                     // '500' or '403' etc
                     @Override
-                    public void onFailure(int statusCode, Throwable error,
-                                          String content) {
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         // Hide Progress Dialog
                         prgDialog.hide();
                         if (prgDialog != null) {

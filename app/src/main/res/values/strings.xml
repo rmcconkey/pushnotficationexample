@@ -9,4 +9,6 @@
     <string name="msg_title">Message</string>
     <string name="user_title">Hello User</string>
 
+    <string name="action_settings">Action Settings</string>
+
 </resources>
