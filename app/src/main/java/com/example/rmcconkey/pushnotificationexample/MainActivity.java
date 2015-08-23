@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -33,8 +32,6 @@ public class MainActivity extends Activity {
     String regId = "";
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    AsyncTask<Void, Void, String> createRegIdTask;
 
     public static final String REG_ID = "regId";
     public static final String EMAIL_ID = "eMailId";
@@ -94,7 +91,7 @@ public class MainActivity extends Activity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
+                String msg;
                 try {
                     if (gcmObj == null) {
                         gcmObj = GoogleCloudMessaging
@@ -136,7 +133,7 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(REG_ID, regId);
         editor.putString(EMAIL_ID, emailID);
-        editor.commit();
+        editor.apply();
         storeRegIdinServer();
 
     }
@@ -151,6 +148,7 @@ public class MainActivity extends Activity {
                 new AsyncHttpResponseHandler() {
                     // When the response returned by REST has Http
                     // response code '200'
+                    @SuppressWarnings("deprecation")
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         // Hide Progress Dialog
@@ -171,6 +169,7 @@ public class MainActivity extends Activity {
                     // When the response returned by REST has Http
                     // response code other than '200' such as '404',
                     // '500' or '403' etc
+                    @SuppressWarnings("deprecation")
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         // Hide Progress Dialog
