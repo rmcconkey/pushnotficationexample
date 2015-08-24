@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +25,8 @@ import org.apache.http.Header;
 import java.io.IOException;
 
 public class MainActivity extends Activity {
+
+    private final String TAG = this.getClass().getSimpleName();
 
     ProgressDialog prgDialog;
     RequestParams params = new RequestParams();
@@ -115,11 +118,13 @@ public class MainActivity extends Activity {
                             applicationContext,
                             "Registered with GCM Server successfully.\n\n"
                                     + msg, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Registered with GCM Server successfully:  msg = " + msg);
                 } else {
                     Toast.makeText(
                             applicationContext,
                             "Reg ID Creation Failed.\n\nEither you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time."
                                     + msg, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Reg ID Creation Failed. Either you haven't enabled Internet or GCM server is busy right now. Make sure you enabled Internet and try registering again after some time.");
                 }
             }
         }.execute(null, null, null);
@@ -159,6 +164,7 @@ public class MainActivity extends Activity {
                         Toast.makeText(applicationContext,
                                 "Reg Id shared successfully with Web App ",
                                 Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "Reg Id shared successfully with Web App ");
                         Intent i = new Intent(applicationContext,
                                 HomeActivity.class);
                         i.putExtra("regId", regId);
@@ -193,9 +199,11 @@ public class MainActivity extends Activity {
                         else {
                             Toast.makeText(
                                     applicationContext,
-                                    "Unexpected Error occcured! [Most common Error: Device might "
+                                    "Unexpected Error occurred! [Most common Error: Device might "
                                             + "not be connected to Internet or remote server is not up and running], check for other errors as well",
-                                    Toast.LENGTH_LONG).show();}
+                                    Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running], check for other errors as well");
+                        }
                     }
                 });
     }
@@ -215,6 +223,7 @@ public class MainActivity extends Activity {
                         applicationContext,
                         "This device doesn't support Play services, App will not work normally",
                         Toast.LENGTH_LONG).show();
+                Log.d(TAG, "This device doesn't support Play services, App will not work normally");
                 finish();
             }
             return false;
@@ -223,6 +232,7 @@ public class MainActivity extends Activity {
                     applicationContext,
                     "This device supports Play services, App will work normally",
                     Toast.LENGTH_LONG).show();
+            Log.d(TAG, "This device supports Play services, App will work normally");
         }
         return true;
     }

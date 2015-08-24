@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  * Created by rmcconkey on 8/23/15.
  */
 public class HomeActivity extends Activity {
+
+    private final String TAG = this.getClass().getSimpleName();
+
     TextView msgET, usertitleET;
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -40,6 +44,7 @@ public class HomeActivity extends Activity {
                     getApplicationContext(),
                     "This device doesn't support Play services, App will not work normally",
                     Toast.LENGTH_LONG).show();
+            Log.d(TAG, "This device doesn't support Play services, App will not work normally");
         }
 
         usertitleET.setText("Hello " + eMailId + " !");
@@ -66,6 +71,7 @@ public class HomeActivity extends Activity {
                         getApplicationContext(),
                         "This device doesn't support Play services, App will not work normally",
                         Toast.LENGTH_LONG).show();
+                Log.d(TAG, "This device doesn't support Play services, App will not work normally");
                 finish();
             }
             return false;
@@ -74,6 +80,7 @@ public class HomeActivity extends Activity {
                     getApplicationContext(),
                     "This device supports Play services, App will work normally",
                     Toast.LENGTH_LONG).show();
+            Log.d(TAG, "This device supports Play services, App will work normally");
         }
         return true;
     }

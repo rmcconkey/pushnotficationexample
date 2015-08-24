@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">GCMPushNotificationExample</string>
+    <string name="app_name">GCM Push Notification Example</string>
     <string name="welcome_txt">GCM App</string>
     <string name="email">Email Address</string>
     <string name="login">Register Me</string>
